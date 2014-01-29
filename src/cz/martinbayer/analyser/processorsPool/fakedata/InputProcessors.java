@@ -9,17 +9,17 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-import cz.martinbayer.analyser.logic.model.XMLog;
-import cz.martinbayer.analyser.logic.model.XMLogData;
-import cz.martinbayer.analyser.logic.processor.InputProcessor;
-import cz.martinbayer.analyser.logic.processor.LogProcessor;
-import cz.martinbayer.e4.analyser.description.gui.ProcessorsPaletteItem;
-import cz.martinbayer.e4.analyser.description.logic.ProcessorLogic;
+import cz.martinbayer.analyser.processors.IProcessorLogic;
+import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
+import cz.martinbayer.analyser.processors.model.IXMLog;
+import cz.martinbayer.analyser.processors.model.XMLogData;
+import cz.martinbayer.analyser.processors.types.InputProcessor;
+import cz.martinbayer.analyser.processors.types.LogProcessor;
 import cz.martinbayer.utils.ImageUtils;
 
 public class InputProcessors {
 
-	public HashMap<ProcessorsPaletteItem, ProcessorLogic> inputProcessors = new HashMap<>();
+	public HashMap<IProcessorsPaletteItem, IProcessorLogic<IXMLog>> inputProcessors = new HashMap<>();
 
 	private InputProcessors() {
 		initialize();
@@ -27,17 +27,17 @@ public class InputProcessors {
 
 	private void initialize() {
 		final InputProcessor1 ip1 = new InputProcessor1("input processor 1");
-		ProcessorLogic ip1Logic = new ProcessorLogic() {
+		IProcessorLogic<IXMLog> ip1Logic = new IProcessorLogic<IXMLog>() {
 
 			@Override
-			public LogProcessor getProcessor() {
+			public LogProcessor<IXMLog> getProcessor() {
 				return ip1;
 			}
 		};
 
-		ProcessorsPaletteItem ip1Item = new ProcessorsPaletteItem() {
+		IProcessorsPaletteItem ip1Item = new IProcessorsPaletteItem() {
 
-			private Class<? extends LogProcessor> type;
+			private Class<? extends LogProcessor<? extends IXMLog>> type;
 
 			@Override
 			public ImageDescriptor getImageDescriptor() {
@@ -63,12 +63,18 @@ public class InputProcessors {
 			}
 
 			@Override
-			public void setType(Class<? extends LogProcessor> clazz) {
-				this.type = clazz;
+			public void setType(
+					Class<? extends LogProcessor<? extends IXMLog>> type) {
+				this.type = type;
 			}
 
 			@Override
-			public Class<? extends LogProcessor> getType() {
+			public String getLabel() {
+				return "Label for ip1";
+			}
+
+			@Override
+			public Class<? extends LogProcessor<? extends IXMLog>> getType() {
 				return this.type;
 			}
 		};
@@ -76,17 +82,17 @@ public class InputProcessors {
 
 		final InputProcessor2 ip2 = new InputProcessor2("input processor 2");
 
-		ProcessorLogic ip2Logic = new ProcessorLogic() {
+		IProcessorLogic<IXMLog> ip2Logic = new IProcessorLogic<IXMLog>() {
 
 			@Override
-			public LogProcessor getProcessor() {
+			public LogProcessor<IXMLog> getProcessor() {
 				return ip2;
 			}
 		};
 
-		ProcessorsPaletteItem ip2Item = new ProcessorsPaletteItem() {
+		IProcessorsPaletteItem ip2Item = new IProcessorsPaletteItem() {
 
-			private Class<? extends LogProcessor> type;
+			private Class<? extends LogProcessor<? extends IXMLog>> type;
 
 			@Override
 			public ImageDescriptor getImageDescriptor() {
@@ -112,13 +118,20 @@ public class InputProcessors {
 			}
 
 			@Override
-			public void setType(Class<? extends LogProcessor> clazz) {
-				this.type = clazz;
+			public Class<? extends LogProcessor<? extends IXMLog>> getType() {
+				return this.type;
 			}
 
 			@Override
-			public Class<? extends LogProcessor> getType() {
-				return this.type;
+			public void setType(
+					Class<? extends LogProcessor<? extends IXMLog>> type) {
+				this.type = type;
+			}
+
+			@Override
+			public String getLabel() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 		inputProcessors.put(ip2Item, ip2Logic);
@@ -130,14 +143,15 @@ public class InputProcessors {
 
 }
 
-class InputProcessor1 extends InputProcessor {
-	XMLogData<FakeXMLog> data;
+class InputProcessor1 extends InputProcessor<IXMLog> {
+	XMLogData<IXMLog> data;
 	private String name;
 
 	public InputProcessor1(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -163,7 +177,7 @@ class InputProcessor1 extends InputProcessor {
 
 	@Override
 	protected void process() {
-		for (XMLog log : logData.getLogRecords()) {
+		for (IXMLog log : logData.getLogRecords()) {
 			if (log instanceof FakeXMLog) {
 				((FakeXMLog) log).setProcessorName(((FakeXMLog) log)
 						.getProcessorName().concat("...processed"));
@@ -172,14 +186,15 @@ class InputProcessor1 extends InputProcessor {
 	}
 }
 
-class InputProcessor2 extends InputProcessor {
-	XMLogData<FakeXMLog> data;
+class InputProcessor2 extends InputProcessor<IXMLog> {
+	XMLogData<IXMLog> data;
 	private String name;
 
 	public InputProcessor2(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -205,7 +220,7 @@ class InputProcessor2 extends InputProcessor {
 
 	@Override
 	protected void process() {
-		for (XMLog log : logData.getLogRecords()) {
+		for (IXMLog log : logData.getLogRecords()) {
 			if (log instanceof FakeXMLog) {
 				((FakeXMLog) log).setProcessorName(((FakeXMLog) log)
 						.getProcessorName().concat("...processed"));

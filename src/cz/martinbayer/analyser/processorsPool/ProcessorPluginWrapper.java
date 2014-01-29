@@ -1,7 +1,9 @@
 package cz.martinbayer.analyser.processorsPool;
 
-import cz.martinbayer.e4.analyser.description.gui.ProcessorsPaletteItem;
-import cz.martinbayer.e4.analyser.description.logic.ProcessorLogic;
+import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
+import cz.martinbayer.analyser.processors.IProcessorLogic;
+import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
+import cz.martinbayer.analyser.processors.model.IXMLog;
 
 /**
  * used to wrap GUI and logic part of the processor plugin
@@ -9,31 +11,33 @@ import cz.martinbayer.e4.analyser.description.logic.ProcessorLogic;
  * @author Martin
  * 
  */
-public class ProcessorPluginWrapper {
+public class ProcessorPluginWrapper implements IProcessorItemWrapper<IXMLog> {
 
-	private ProcessorsPaletteItem paletteItem;
-	private ProcessorLogic processorLogic;
+	private IProcessorsPaletteItem paletteItem;
+	private IProcessorLogic<IXMLog> processorLogic;
 
-	public ProcessorPluginWrapper(ProcessorsPaletteItem paletteItem,
-			ProcessorLogic processorLogic) {
+	public ProcessorPluginWrapper(IProcessorsPaletteItem paletteItem,
+			IProcessorLogic<IXMLog> processorLogic) {
 		this.paletteItem = paletteItem;
 		this.processorLogic = processorLogic;
 	}
 
-	public ProcessorsPaletteItem getPaletteItem() {
-		return paletteItem;
-	}
-
-	public void setPaletteItem(ProcessorsPaletteItem paletteItem) {
+	public void setPaletteItem(IProcessorsPaletteItem paletteItem) {
 		this.paletteItem = paletteItem;
 	}
 
-	public ProcessorLogic getProcessorLogic() {
+	@Override
+	public IProcessorLogic<IXMLog> getProcessorLogic() {
 		return processorLogic;
 	}
 
-	public void setProcessorLogic(ProcessorLogic processorLogic) {
+	public void setProcessorLogic(IProcessorLogic<IXMLog> processorLogic) {
 		this.processorLogic = processorLogic;
+	}
+
+	@Override
+	public IProcessorsPaletteItem getProcessorPaletteItem() {
+		return paletteItem;
 	}
 
 }
