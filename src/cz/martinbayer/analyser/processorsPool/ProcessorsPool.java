@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+
 import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
 import cz.martinbayer.analyser.processors.IProcessorLogic;
 import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
@@ -37,6 +41,32 @@ public class ProcessorsPool {
 			pool = new ProcessorsPool();
 		}
 		return pool;
+	}
+
+	public int initializeFromBundles(BundleContext ctx) {
+		ArrayList<IProcessorItemWrapper<IXMLog>> services = new ArrayList<>();
+		ServiceReference<?>[] ref;
+
+		try {
+			ref = ctx.getServiceReferences(
+					IProcessorItemWrapper.class.getName(), null);
+
+			for (ServiceReference<?> sr : ref) {
+				IProcessorItemWrapper<IXMLog> service = (IProcessorItemWrapper<IXMLog>) ctx
+						.getService(sr);
+				services.add(service);
+			}
+			StringBuffer sb = new StringBuffer();
+			sb.append("starting").append("\n");
+			for (IProcessorItemWrapper<IXMLog> s : services) {
+				sb.append(s.getProcessorPaletteItem().getLabel());
+			}
+			System.out.println(sb.toString());
+		} catch (InvalidSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	public List<IProcessorItemWrapper<IXMLog>> getProcessors() {
