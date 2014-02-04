@@ -19,11 +19,6 @@ public class ProcessorsPool {
 	private static ProcessorsPool pool;
 	private List<IProcessorItemWrapper<IXMLog>> processors;
 
-	private ProcessorsPool() {
-		initialize();
-		createFakeData();
-	}
-
 	private void createFakeData() {
 		InputProcessors inputProcessors = InputProcessors.getInstance();
 		for (Entry<IProcessorsPaletteItem, IProcessorLogic<IXMLog>> item : inputProcessors.inputProcessors
@@ -32,8 +27,9 @@ public class ProcessorsPool {
 		}
 	}
 
-	private void initialize() {
+	public void initialize(BundleContext ctx) {
 		processors = new ArrayList<>();
+		initializeFromBundles(ctx);
 	}
 
 	public static synchronized ProcessorsPool getInstance() {
@@ -43,7 +39,7 @@ public class ProcessorsPool {
 		return pool;
 	}
 
-	public int initializeFromBundles(BundleContext ctx) {
+	private void initializeFromBundles(BundleContext ctx) {
 		ArrayList<IProcessorItemWrapper<IXMLog>> services = new ArrayList<>();
 		ServiceReference<?>[] ref;
 
@@ -56,20 +52,20 @@ public class ProcessorsPool {
 						.getService(sr);
 				services.add(service);
 			}
-			StringBuffer sb = new StringBuffer();
-			sb.append("starting").append("\n");
 			for (IProcessorItemWrapper<IXMLog> s : services) {
-				sb.append(s.getProcessorPaletteItem().getLabel());
+				processors.add(s);
 			}
-			System.out.println(sb.toString());
 		} catch (InvalidSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 	public List<IProcessorItemWrapper<IXMLog>> getProcessors() {
+		if (processors == null) {
+			throw new NullPointerException(
+					"ProcessorsPool not initialized. Initialize the pool with initialize(BundleContext ctx) method");
+		}
 		return processors;
 	}
 
