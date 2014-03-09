@@ -1,5 +1,7 @@
 package cz.martinbayer.analyser.processorsPool;
 
+import org.eclipse.swt.events.MouseEvent;
+
 import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
 import cz.martinbayer.analyser.processors.IProcessorLogic;
 import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
@@ -38,6 +40,12 @@ public class ProcessorPluginWrapper implements IProcessorItemWrapper<IXMLog> {
 	@Override
 	public IProcessorsPaletteItem getProcessorPaletteItem() {
 		return paletteItem;
+	}
+
+	@Override
+	public void mouseDoubleClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
