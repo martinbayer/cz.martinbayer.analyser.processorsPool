@@ -10,4 +10,5 @@ Require-Bundle: org.eclipse.jface;bundle-version="3.9.1",
  cz.martinbayer.utils,
  cz.martinbayer.analyser
 Export-Package: cz.martinbayer.analyser.processorsPool
-Import-Package: cz.martinbayer.analyser.processors
+Import-Package: cz.martinbayer.analyser.processors,
+ org.slf4j
