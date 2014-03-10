@@ -44,8 +44,13 @@ public class ProcessorPluginWrapper implements IProcessorItemWrapper<IXMLog> {
 
 	@Override
 	public void mouseDoubleClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		System.out.println(this.processorLogic.getProcessor()
+				.getNextProcsCount());
+	}
 
+	@Override
+	public IProcessorItemWrapper<IXMLog> getInstance() {
+		return new ProcessorPluginWrapper(paletteItem, processorLogic);
 	}
 
 }
