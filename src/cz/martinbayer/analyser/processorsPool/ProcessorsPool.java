@@ -2,7 +2,6 @@ package cz.martinbayer.analyser.processorsPool;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -12,20 +11,11 @@ import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
 import cz.martinbayer.analyser.processors.IProcessorLogic;
 import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
 import cz.martinbayer.analyser.processors.model.IXMLog;
-import cz.martinbayer.analyser.processorsPool.fakedata.InputProcessors;
 
 public class ProcessorsPool {
 
 	private static ProcessorsPool pool;
 	private List<IProcessorItemWrapper<IXMLog>> processors;
-
-	private void createFakeData() {
-		InputProcessors inputProcessors = InputProcessors.getInstance();
-		for (Entry<IProcessorsPaletteItem, IProcessorLogic<IXMLog>> item : inputProcessors.inputProcessors
-				.entrySet()) {
-			addProcessor(item.getKey(), item.getValue());
-		}
-	}
 
 	public void initialize(BundleContext ctx) {
 		processors = new ArrayList<>();
