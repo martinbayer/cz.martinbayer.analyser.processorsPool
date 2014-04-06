@@ -36,7 +36,9 @@ public class ProcessorsPool {
 		try {
 			ref = ctx.getServiceReferences(
 					IProcessorItemWrapper.class.getName(), null);
-
+			if (ref == null) {
+				return;
+			}
 			for (ServiceReference<?> sr : ref) {
 				IProcessorItemWrapper<IXMLog> service = (IProcessorItemWrapper<IXMLog>) ctx
 						.getService(sr);
