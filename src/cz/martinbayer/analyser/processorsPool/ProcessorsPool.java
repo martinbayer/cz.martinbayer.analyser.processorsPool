@@ -1,8 +1,10 @@
 package cz.martinbayer.analyser.processorsPool;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -16,9 +18,11 @@ public class ProcessorsPool {
 
 	private static ProcessorsPool pool;
 	private List<IProcessorItemWrapper<IXMLog>> processors;
+	private List<Bundle> processorsBundles;
 
 	public void initialize(BundleContext ctx) {
 		processors = new ArrayList<>();
+		processorsBundles = new ArrayList<>();
 		initializeFromBundles(ctx);
 	}
 
@@ -43,6 +47,8 @@ public class ProcessorsPool {
 				IProcessorItemWrapper<IXMLog> service = (IProcessorItemWrapper<IXMLog>) ctx
 						.getService(sr);
 				services.add(service);
+				/* save the reference to every processor's bundle */
+				processorsBundles.add(sr.getBundle());
 			}
 			for (IProcessorItemWrapper<IXMLog> s : services) {
 				processors.add(s);
@@ -58,7 +64,15 @@ public class ProcessorsPool {
 			throw new NullPointerException(
 					"ProcessorsPool not initialized. Initialize the pool with initialize(BundleContext ctx) method");
 		}
-		return processors;
+		return Collections.unmodifiableList(processors);
+	}
+
+	public List<Bundle> getProcBundles() {
+		if (processorsBundles == null) {
+			throw new NullPointerException(
+					"ProcessorsPool not initialized. Initialize the pool with initialize(BundleContext ctx) method");
+		}
+		return Collections.unmodifiableList(processorsBundles);
 	}
 
 	public void addProcessor(IProcessorsPaletteItem paletteItem,
