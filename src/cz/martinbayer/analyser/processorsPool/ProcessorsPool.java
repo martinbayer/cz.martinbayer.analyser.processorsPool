@@ -12,12 +12,12 @@ import org.osgi.framework.ServiceReference;
 import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
 import cz.martinbayer.analyser.processors.IProcessorLogic;
 import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
-import cz.martinbayer.analyser.processors.model.IXMLog;
+import cz.martinbayer.analyser.processors.model.IE4LogsisLog;
 
 public class ProcessorsPool {
 
 	private static ProcessorsPool pool;
-	private List<IProcessorItemWrapper<IXMLog>> processors;
+	private List<IProcessorItemWrapper<IE4LogsisLog>> processors;
 	private List<Bundle> processorsBundles;
 
 	public void initialize(BundleContext ctx) {
@@ -34,7 +34,7 @@ public class ProcessorsPool {
 	}
 
 	private void initializeFromBundles(BundleContext ctx) {
-		ArrayList<IProcessorItemWrapper<IXMLog>> services = new ArrayList<>();
+		ArrayList<IProcessorItemWrapper<IE4LogsisLog>> services = new ArrayList<>();
 		ServiceReference<?>[] ref;
 
 		try {
@@ -44,13 +44,13 @@ public class ProcessorsPool {
 				return;
 			}
 			for (ServiceReference<?> sr : ref) {
-				IProcessorItemWrapper<IXMLog> service = (IProcessorItemWrapper<IXMLog>) ctx
+				IProcessorItemWrapper<IE4LogsisLog> service = (IProcessorItemWrapper<IE4LogsisLog>) ctx
 						.getService(sr);
 				services.add(service);
 				/* save the reference to every processor's bundle */
 				processorsBundles.add(sr.getBundle());
 			}
-			for (IProcessorItemWrapper<IXMLog> s : services) {
+			for (IProcessorItemWrapper<IE4LogsisLog> s : services) {
 				processors.add(s);
 			}
 		} catch (InvalidSyntaxException e) {
@@ -59,7 +59,7 @@ public class ProcessorsPool {
 		}
 	}
 
-	public List<IProcessorItemWrapper<IXMLog>> getProcessors() {
+	public List<IProcessorItemWrapper<IE4LogsisLog>> getProcessors() {
 		if (processors == null) {
 			throw new NullPointerException(
 					"ProcessorsPool not initialized. Initialize the pool with initialize(BundleContext ctx) method");
@@ -76,7 +76,7 @@ public class ProcessorsPool {
 	}
 
 	public void addProcessor(IProcessorsPaletteItem paletteItem,
-			IProcessorLogic<IXMLog> processorLogic) {
+			IProcessorLogic<IE4LogsisLog> processorLogic) {
 		ProcessorPluginWrapper item = new ProcessorPluginWrapper(paletteItem,
 				processorLogic);
 		if (!processors.contains(item)) {

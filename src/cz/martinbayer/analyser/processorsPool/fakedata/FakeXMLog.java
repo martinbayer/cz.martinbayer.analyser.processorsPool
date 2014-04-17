@@ -1,8 +1,8 @@
 package cz.martinbayer.analyser.processorsPool.fakedata;
 
-import cz.martinbayer.analyser.processors.model.XMLog;
+import cz.martinbayer.analyser.processors.model.E4LogsisLog;
 
-public class FakeXMLog extends XMLog {
+public class FakeXMLog extends E4LogsisLog {
 
 	private String processorName;
 

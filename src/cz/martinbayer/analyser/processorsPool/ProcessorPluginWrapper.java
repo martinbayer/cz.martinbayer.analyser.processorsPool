@@ -5,7 +5,7 @@ import org.eclipse.swt.events.MouseEvent;
 import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
 import cz.martinbayer.analyser.processors.IProcessorLogic;
 import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
-import cz.martinbayer.analyser.processors.model.IXMLog;
+import cz.martinbayer.analyser.processors.model.IE4LogsisLog;
 
 /**
  * used to wrap GUI and logic part of the processor plugin
@@ -13,13 +13,13 @@ import cz.martinbayer.analyser.processors.model.IXMLog;
  * @author Martin
  * 
  */
-public class ProcessorPluginWrapper implements IProcessorItemWrapper<IXMLog> {
+public class ProcessorPluginWrapper implements IProcessorItemWrapper<IE4LogsisLog> {
 
 	private IProcessorsPaletteItem paletteItem;
-	private IProcessorLogic<IXMLog> processorLogic;
+	private IProcessorLogic<IE4LogsisLog> processorLogic;
 
 	public ProcessorPluginWrapper(IProcessorsPaletteItem paletteItem,
-			IProcessorLogic<IXMLog> processorLogic) {
+			IProcessorLogic<IE4LogsisLog> processorLogic) {
 		this.paletteItem = paletteItem;
 		this.processorLogic = processorLogic;
 	}
@@ -29,11 +29,11 @@ public class ProcessorPluginWrapper implements IProcessorItemWrapper<IXMLog> {
 	}
 
 	@Override
-	public IProcessorLogic<IXMLog> getProcessorLogic() {
+	public IProcessorLogic<IE4LogsisLog> getProcessorLogic() {
 		return processorLogic;
 	}
 
-	public void setProcessorLogic(IProcessorLogic<IXMLog> processorLogic) {
+	public void setProcessorLogic(IProcessorLogic<IE4LogsisLog> processorLogic) {
 		this.processorLogic = processorLogic;
 	}
 
@@ -49,7 +49,7 @@ public class ProcessorPluginWrapper implements IProcessorItemWrapper<IXMLog> {
 	}
 
 	@Override
-	public IProcessorItemWrapper<IXMLog> getInstance() {
+	public IProcessorItemWrapper<IE4LogsisLog> getInstance() {
 		return new ProcessorPluginWrapper(paletteItem, processorLogic);
 	}
 
