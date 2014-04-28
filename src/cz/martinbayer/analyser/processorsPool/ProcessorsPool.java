@@ -10,8 +10,6 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 import cz.martinbayer.analyser.processors.IProcessorItemWrapper;
-import cz.martinbayer.analyser.processors.IProcessorLogic;
-import cz.martinbayer.analyser.processors.IProcessorsPaletteItem;
 import cz.martinbayer.analyser.processors.model.IE4LogsisLog;
 
 public class ProcessorsPool {
@@ -73,14 +71,5 @@ public class ProcessorsPool {
 					"ProcessorsPool not initialized. Initialize the pool with initialize(BundleContext ctx) method");
 		}
 		return Collections.unmodifiableList(processorsBundles);
-	}
-
-	public void addProcessor(IProcessorsPaletteItem paletteItem,
-			IProcessorLogic<IE4LogsisLog> processorLogic) {
-		ProcessorPluginWrapper item = new ProcessorPluginWrapper(paletteItem,
-				processorLogic);
-		if (!processors.contains(item)) {
-			processors.add(item);
-		}
 	}
 }
